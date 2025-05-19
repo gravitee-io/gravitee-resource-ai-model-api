@@ -1,4 +1,4 @@
-= Resource Schema Registry Provider API
+= Resource AI Model API
 
 image:https://img.shields.io/badge/License-Apache%202.0-blue.svg["License", link="https://github.com/gravitee-io/gravitee-resource-schema registry-provider-api/blob/main/LICENSE.txt"]
 image:https://img.shields.io/badge/semantic--release-conventional%20commits-e10079?logo=semantic-release["Releases", link="https://github.com/gravitee-io/gravitee-resource-schema registry-provider-api/releases"]
