@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.gravitee.resource.ai_model.api;
+package io.gravitee.resource.ai_model.api.model;
 
-import java.util.Collection;
-
-public record ClassifierResults(Collection<ClassifierResult> results) {
-    public record ClassifierResult(String label, float score, String token, Integer start, Integer end) {}
+public enum ModelFileType {
+    MODEL,
+    TOKENIZER,
+    CONFIG,
 }

@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.gravitee.resource.ai_model.api;
+package io.gravitee.resource.ai_model.api.result;
 
-import io.gravitee.resource.ai_model.api.model.PromptInput;
-import io.gravitee.resource.api.AbstractConfigurableResource;
-import io.gravitee.resource.api.ResourceConfiguration;
-import io.reactivex.rxjava3.core.Single;
+import java.util.Collection;
 
-public abstract class AiTextClassificationModelResource<C extends ResourceConfiguration> extends AbstractConfigurableResource<C> {
-
-    public abstract Single<ClassifierResults> invokeModel(PromptInput input);
+public record ClassifierResults(Collection<ClassifierResult> results) {
+    public record ClassifierResult(String label, float score, String token, Integer start, Integer end) {}
 }
