@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.0.0...2.0.1) (2025-06-10)
+
+
+### Bug Fixes
+
+* better modelAddress handling ([d131884](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/d131884a6e6de065ac428a0b898ef5a16f0dbc97))
+
 # [2.0.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/1.0.0...2.0.0) (2025-06-10)
 
 
