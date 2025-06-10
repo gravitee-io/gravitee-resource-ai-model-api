@@ -28,6 +28,7 @@ import io.vertx.core.json.Json;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.core.eventbus.Message;
 import java.util.Map;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -47,6 +48,7 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
 
     public Single<RESULT> infer(INPUT input) {
         return getModelAddress()
+            .switchIfEmpty(Single.error(new ModelInvokeException("Model address could not be resolved")))
             .flatMap(address ->
                 vertx
                     .eventBus()
@@ -56,8 +58,8 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
             );
     }
 
-    private Single<String> getModelAddress() {
-        return Maybe.just(modelAddress).switchIfEmpty(Single.error(new ModelInvokeException("Model address could not be resolved")));
+    private Maybe<String> getModelAddress() {
+        return Optional.ofNullable(modelAddress).map(Maybe::just).orElse(Maybe.empty());
     }
 
     public Single<String> loadModel(Map<String, Object> config) {
