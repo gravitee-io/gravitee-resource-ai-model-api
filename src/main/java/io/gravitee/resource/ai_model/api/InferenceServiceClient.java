@@ -25,6 +25,7 @@ import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.Json;
+import io.vertx.rxjava3.RxHelper;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.core.eventbus.Message;
 import java.util.Map;
@@ -67,6 +68,8 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
         return vertx
             .eventBus()
             .<Buffer>request(SERVICE_INFERENCE_MODELS_ADDRESS, Json.encodeToBuffer(request))
+            .subscribeOn(RxHelper.blockingScheduler(vertx.getDelegate()))
+            .observeOn(RxHelper.blockingScheduler(vertx.getDelegate()))
             .map(bufferMessage -> bufferMessage.body().toString())
             .doOnSuccess(address -> modelAddress = address)
             .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
