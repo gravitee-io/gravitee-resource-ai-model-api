@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.0.1...2.1.0) (2025-06-24)
+
+
+### Features
+
+* remove model file notion within the resource ([babebbd](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/babebbd259cb8eb896c55b68d47da4380638b341))
+
 ## [2.0.1](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.0.0...2.0.1) (2025-06-10)
 
 
