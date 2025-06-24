@@ -35,11 +35,13 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class InferenceServiceClient<INPUT, RESULT> {
 
     private final Vertx vertx;
+    private final Map<String, Object> config;
 
     private String modelAddress = null;
 
-    protected InferenceServiceClient(Vertx vertx) {
+    protected InferenceServiceClient(Vertx vertx, Map<String, Object> config) {
         this.vertx = vertx;
+        this.config = config;
     }
 
     protected abstract RESULT handleResult(Message<Buffer> message);
@@ -62,7 +64,7 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
         return Optional.ofNullable(modelAddress).map(Maybe::just).orElse(Maybe.empty());
     }
 
-    public Single<String> loadModel(Map<String, Object> config) {
+    public Single<String> loadModel() {
         var request = new InferenceRequest(InferenceAction.START, config);
         return vertx
             .eventBus()
