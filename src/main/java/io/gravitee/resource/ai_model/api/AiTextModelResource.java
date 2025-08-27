@@ -40,7 +40,6 @@ public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL
         super.doStart();
         vertx = applicationContext.getBean(Vertx.class);
         inferenceServiceClient = buildInferenceServiceClient();
-
         fetchModel();
     }
 
