@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.1.0...2.2.0) (2025-08-27)
+
+
+### Features
+
+* release for the new gravitee-inference-api.version v1.5.0 ([#13](https://github.com/gravitee-io/gravitee-resource-ai-model-api/issues/13)) ([9ba4e25](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/9ba4e25ff49118a09c72445c7ef77724eed64f95))
+
 # [2.1.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.0.1...2.1.0) (2025-06-24)
 
 
