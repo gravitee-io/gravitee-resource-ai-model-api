@@ -46,12 +46,9 @@ public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL
     @Override
     public void doStop() throws Exception {
         super.doStop();
-        inferenceServiceClient
-            .stopModel()
-            .subscribe(
-                address -> log.debug("Model [{}] at address [{}] stopped", getModelName(), address),
-                throwable -> log.error("Model {} stopped", getModelName(), throwable)
-            );
+        // We need to block the call to ensure the model is unloaded
+        var address = inferenceServiceClient.stopModel().blockingGet();
+        log.debug("Model [{}] at address [{}] stopped", getModelName(), address);
     }
 
     protected abstract String getModelName();
@@ -66,11 +63,8 @@ public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL
     }
 
     protected void fetchModel() {
-        inferenceServiceClient
-            .loadModel()
-            .subscribe(
-                address -> log.debug("Loaded model [{}] at address [{}]", getModelName(), address),
-                t -> log.error("Failed to load model", t)
-            );
+        // We need to block the call to ensure the model is loaded before ending initialization
+        var address = inferenceServiceClient.loadModel().blockingGet();
+        log.debug("Loaded model [{}] at address [{}]", getModelName(), address);
     }
 }
