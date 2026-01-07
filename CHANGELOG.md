@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.0...2.2.1) (2026-01-07)
+
+
+### Bug Fixes
+
+* use blockingGet to block the resource initialization ([fcf515b](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/fcf515b23109dcf2491a58aee4ff26c55a2a701f))
+
 # [2.2.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.1.0...2.2.0) (2025-08-27)
 
 
