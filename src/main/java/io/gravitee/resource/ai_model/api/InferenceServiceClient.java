@@ -21,14 +21,13 @@ import static io.gravitee.inference.api.service.InferenceAction.STOP;
 
 import io.gravitee.inference.api.service.InferenceAction;
 import io.gravitee.inference.api.service.InferenceRequest;
-import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.core.eventbus.Message;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -49,19 +48,17 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
     protected abstract InferenceRequest buildInferRequest(INPUT sentence);
 
     public Single<RESULT> infer(INPUT input) {
-        return getModelAddress()
-            .switchIfEmpty(Single.error(new ModelInvokeException("Model address could not be resolved")))
-            .flatMap(address ->
-                vertx
-                    .eventBus()
-                    .<Buffer>request(address, Json.encodeToBuffer(buildInferRequest(input)))
-                    .map(this::handleResult)
-                    .doOnError(throwable -> log.error(throwable.getMessage(), throwable))
-            );
-    }
-
-    private Maybe<String> getModelAddress() {
-        return Optional.ofNullable(modelAddress).map(Maybe::just).orElse(Maybe.empty());
+        final String addr = modelAddress;
+        if (addr == null) {
+            return Single.error(new ModelInvokeException("Model address is not set"));
+        }
+        return Single.just(addr).flatMap(address ->
+            vertx
+                .eventBus()
+                .<Buffer>request(address, Json.encodeToBuffer(buildInferRequest(input)))
+                .map(this::handleResult)
+                .doOnError(throwable -> log.error("Inference failed", throwable))
+        );
     }
 
     public Single<String> loadModel() {
@@ -70,17 +67,21 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
             .eventBus()
             .<Buffer>request(SERVICE_INFERENCE_MODELS_ADDRESS, Json.encodeToBuffer(request))
             .map(bufferMessage -> bufferMessage.body().toString())
-            .doOnSuccess(address -> modelAddress = address)
-            .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
+            .doOnSuccess(address -> modelAddress = Objects.requireNonNull(address, "Model address cannot be null"))
+            .doOnError(throwable -> log.error("Model could not be loaded", throwable))
+            .onErrorResumeNext(throwable -> Single.error(new ModelLifeCycleException("Model address could not be resolved", throwable)));
     }
 
     public Single<String> stopModel() {
         return vertx
             .eventBus()
             .<Buffer>request(SERVICE_INFERENCE_MODELS_ADDRESS, Json.encodeToBuffer(buildStopRequest()))
-            .map(bufferMessage -> bufferMessage.body().toString())
-            .doOnSuccess(address -> modelAddress = null)
-            .doOnError(throwable -> log.error(throwable.getMessage(), throwable));
+            .map(address -> {
+                String addr = modelAddress;
+                modelAddress = null;
+                return addr;
+            })
+            .onErrorResumeNext(throwable -> Single.error(new ModelLifeCycleException("Model could not stop properly", throwable)));
     }
 
     protected InferenceRequest buildStopRequest() {

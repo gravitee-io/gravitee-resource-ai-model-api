@@ -15,17 +15,17 @@
  */
 package io.gravitee.resource.ai_model.api;
 
-public class ModelFetchException extends RuntimeException {
+public class ModelLifeCycleException extends RuntimeException {
 
-    public ModelFetchException(Throwable cause) {
+    public ModelLifeCycleException(Throwable cause) {
         super(cause);
     }
 
-    public ModelFetchException(String message) {
+    public ModelLifeCycleException(String message) {
         super(message);
     }
 
-    public ModelFetchException(String message, Throwable cause) {
+    public ModelLifeCycleException(String message, Throwable cause) {
         super(message, cause);
     }
 }
