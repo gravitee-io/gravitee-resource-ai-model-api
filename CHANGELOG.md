@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.1...2.2.2) (2026-01-27)
+
+
+### Bug Fixes
+
+* fix error message and apply best pratice on exception/log ([1fa38c2](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/1fa38c2e157ccb4bb7f4525367a7d8efb8f71e0e))
+
 ## [2.2.1](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.0...2.2.1) (2026-01-07)
 
 
