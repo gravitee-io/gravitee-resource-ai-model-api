@@ -68,7 +68,6 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
             .<Buffer>request(SERVICE_INFERENCE_MODELS_ADDRESS, Json.encodeToBuffer(request))
             .map(bufferMessage -> bufferMessage.body().toString())
             .doOnSuccess(address -> modelAddress = Objects.requireNonNull(address, "Model address cannot be null"))
-            .doOnError(throwable -> log.error("Model could not be loaded", throwable))
             .onErrorResumeNext(throwable -> Single.error(new ModelLifeCycleException("Model address could not be resolved", throwable)));
     }
 
