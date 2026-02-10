@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.2...2.2.3) (2026-02-10)
+
+
+### Bug Fixes
+
+* apply coding rule log-or-rethrow ([e57d127](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/e57d127d145d40e81c99a5a6e0a6082255c46168))
+
 ## [2.2.2](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.1...2.2.2) (2026-01-27)
 
 
