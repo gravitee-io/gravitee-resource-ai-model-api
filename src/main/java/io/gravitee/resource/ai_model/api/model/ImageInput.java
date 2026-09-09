@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.gravitee.resource.ai_model.api;
+package io.gravitee.resource.ai_model.api.model;
 
-import io.gravitee.resource.ai_model.api.model.PromptInput;
-import io.gravitee.resource.api.ResourceConfiguration;
-import lombok.extern.slf4j.Slf4j;
+import io.vertx.core.buffer.Buffer;
 
-@Slf4j
-public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL_RESULT, RESOURCE_RESULT>
-    extends AiModelResource<C, MODEL_RESULT, RESOURCE_RESULT, PromptInput> {}
+public record ImageInput(Buffer buffer, String mimeType) {}
