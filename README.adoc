@@ -6,5 +6,18 @@ image:https://dl.circleci.com/status-badge/img/gh/gravitee-io/gravitee-resource-
 image:https://f.hubspotusercontent40.net/hubfs/7600448/gravitee-github-button.jpg["Join the community forum", link="https://community.gravitee.io?utm_source=readme", height=20]
 
 
+== Compatibility matrix
+
+|===
+| Plugin version | APIM            | Java version
+
+| 2.x            | 4.8.2 to latest | 21
+| 1.x            | 4.8.0 to 4.8.1  | 21
+|===
+
+The *Java version* column is the bytecode level of the latest release of each line, which sets the minimum runtime able to load the artifact.
+
+This API is bundled by the model plugins that build on it, not supplied by the gateway, so its own compatibility is the bytecode level alone.
+
 == Description
 This repository defines the interface to be implemented by model provider libraries in order to supply AI models to the Gravitee.io APIM Policies.
