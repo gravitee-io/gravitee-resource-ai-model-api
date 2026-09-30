@@ -15,10 +15,10 @@
  */
 package io.gravitee.resource.ai_model.api;
 
-import io.gravitee.resource.ai_model.api.model.PromptInput;
+import io.gravitee.resource.ai_model.api.model.ImageInput;
 import io.gravitee.resource.api.ResourceConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL_RESULT, RESOURCE_RESULT>
-    extends AiModelResource<C, MODEL_RESULT, RESOURCE_RESULT, PromptInput> {}
+public abstract class AiImageModelResource<C extends ResourceConfiguration, MODEL_RESULT, RESOURCE_RESULT>
+    extends AiModelResource<C, MODEL_RESULT, RESOURCE_RESULT, ImageInput> {}
