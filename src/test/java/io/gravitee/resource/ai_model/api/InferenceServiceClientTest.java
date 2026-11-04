@@ -21,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.gravitee.inference.api.service.InferenceRequest;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.ReplyException;
+import io.vertx.core.eventbus.ReplyFailure;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import io.vertx.rxjava3.core.eventbus.Message;
@@ -66,6 +68,45 @@ class InferenceServiceClientTest {
                 .eventBus()
                 .consumer(SERVICE_INFERENCE_MODELS_ADDRESS)
                 .handler(message -> message.reply(Buffer.buffer("response")));
+
+            cut.loadModel().subscribe(str -> context.verify(() -> assertThat(str).isEqualTo("response")).completeNow(), context::failNow);
+        }
+
+        @Test
+        void single_should_be_in_error_when_the_model_is_not_loaded_within_the_load_timeout(Vertx vertx, VertxTestContext context) {
+            var cut = buildInferenceClient(vertx);
+            cut.setLoadTimeout(100);
+
+            vertx
+                .eventBus()
+                .consumer(SERVICE_INFERENCE_MODELS_ADDRESS)
+                .handler(message -> {});
+
+            cut
+                .loadModel()
+                .subscribe(
+                    str -> context.failNow("must fail"),
+                    err -> {
+                        context.verify(() -> {
+                            assertThat(err).isInstanceOf(ModelLifeCycleException.class);
+                            assertThat(err.getCause()).isInstanceOfSatisfying(ReplyException.class, cause ->
+                                assertThat(cause.failureType()).isEqualTo(ReplyFailure.TIMEOUT)
+                            );
+                        });
+                        context.completeNow();
+                    }
+                );
+        }
+
+        @Test
+        void single_should_wait_for_a_model_loaded_within_the_load_timeout(Vertx vertx, VertxTestContext context) {
+            var cut = buildInferenceClient(vertx);
+            cut.setLoadTimeout(2_000);
+
+            vertx
+                .eventBus()
+                .consumer(SERVICE_INFERENCE_MODELS_ADDRESS)
+                .handler(message -> vertx.setTimer(500, id -> message.reply(Buffer.buffer("response"))));
 
             cut.loadModel().subscribe(str -> context.verify(() -> assertThat(str).isEqualTo("response")).completeNow(), context::failNow);
         }
