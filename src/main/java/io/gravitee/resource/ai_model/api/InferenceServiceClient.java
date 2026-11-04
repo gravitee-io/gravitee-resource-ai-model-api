@@ -23,6 +23,7 @@ import io.gravitee.inference.api.service.InferenceAction;
 import io.gravitee.inference.api.service.InferenceRequest;
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.core.eventbus.Message;
@@ -33,14 +34,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class InferenceServiceClient<INPUT, RESULT> {
 
+    /**
+     * How long to wait for the inference service to load the model. It is longer than the event
+     * bus default of 30 seconds: loading a model on a busy pod takes minutes.
+     */
+    public static final long DEFAULT_LOAD_TIMEOUT_MS = 300_000L;
+
     private final Vertx vertx;
     private final Map<String, Object> config;
+    private long loadTimeoutMs = DEFAULT_LOAD_TIMEOUT_MS;
 
     private String modelAddress = null;
 
     protected InferenceServiceClient(Vertx vertx, Map<String, Object> config) {
         this.vertx = vertx;
         this.config = config;
+    }
+
+    public void setLoadTimeout(long loadTimeoutMs) {
+        this.loadTimeoutMs = loadTimeoutMs;
     }
 
     protected abstract RESULT handleResult(Message<Buffer> message);
@@ -65,7 +77,11 @@ public abstract class InferenceServiceClient<INPUT, RESULT> {
         var request = new InferenceRequest(InferenceAction.START, config);
         return vertx
             .eventBus()
-            .<Buffer>request(SERVICE_INFERENCE_MODELS_ADDRESS, Json.encodeToBuffer(request))
+            .<Buffer>request(
+                SERVICE_INFERENCE_MODELS_ADDRESS,
+                Json.encodeToBuffer(request),
+                new DeliveryOptions().setSendTimeout(loadTimeoutMs)
+            )
             .map(bufferMessage -> bufferMessage.body().toString())
             .doOnSuccess(address -> modelAddress = Objects.requireNonNull(address, "Model address cannot be null"))
             .onErrorResumeNext(throwable -> Single.error(new ModelLifeCycleException("Model address could not be resolved", throwable)));

@@ -31,6 +31,8 @@ public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL
     extends AbstractConfigurableResource<C>
     implements ApplicationContextAware {
 
+    static final String LOAD_TIMEOUT_PROPERTY = "inference.models.loadTimeout";
+
     protected Vertx vertx;
     protected ApplicationContext applicationContext;
     protected InferenceServiceClient<PromptInput, MODEL_RESULT> inferenceServiceClient;
@@ -40,6 +42,11 @@ public abstract class AiTextModelResource<C extends ResourceConfiguration, MODEL
         super.doStart();
         vertx = applicationContext.getBean(Vertx.class);
         inferenceServiceClient = buildInferenceServiceClient();
+        inferenceServiceClient.setLoadTimeout(
+            applicationContext
+                .getEnvironment()
+                .getProperty(LOAD_TIMEOUT_PROPERTY, Long.class, InferenceServiceClient.DEFAULT_LOAD_TIMEOUT_MS)
+        );
         fetchModel();
     }
 
