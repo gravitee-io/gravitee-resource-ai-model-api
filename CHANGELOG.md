@@ -1,3 +1,10 @@
+## [2.2.4](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.3...2.2.4) (2026-11-05)
+
+
+### Bug Fixes
+
+* wait up to 5 minutes for the model to load ([7fe31ba](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/7fe31baca864c6023b0f06ae0e6ff606abf650a0))
+
 ## [2.2.3](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.2...2.2.3) (2026-02-10)
 
 
