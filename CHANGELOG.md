@@ -1,3 +1,10 @@
+## [2.3.1](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.3.0...2.3.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* remove the reason of a decision answer ([d9c382d](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/d9c382d4596d2436648469f5dbce10a8a626fb13))
+
 # [2.3.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.4...2.3.0) (2026-11-18)
 
 
