@@ -30,20 +30,6 @@ import org.junit.jupiter.api.Test;
 class AnswerTest {
 
     @Nested
-    class Reason {
-
-        @Test
-        void should_give_the_reason_of_an_answer() {
-            assertThat(new Answer.Noul(0.8, "Mentions a production outage").reason()).isEqualTo("Mentions a production outage");
-        }
-
-        @Test
-        void should_read_an_answer_without_reason_as_null() {
-            assertThat(new Answer.Score(1.5, 0.7).reason()).isNull();
-        }
-    }
-
-    @Nested
     class Choice {
 
         @Test
