@@ -23,7 +23,7 @@ upgrades its dependency.
   confidence rather than with text. It has no lifecycle of its own: the implementation owns the client that reaches
   the model and releases it on stop
   - `Question` (sealed): `Noul` (yes or no, a name from the SystemOne specification: keep it), `Choice` or `Score`.
-    Each is answered by the `Answer` subtype of the same name, with the reason the model gives (`null` when none)
+    Each is answered by the `Answer` subtype of the same name
   - `DecisionRequest`: the context, made of JSON values and sent to the model as JSON, and the questions under their
     keys, in order
   - `DecisionResult`: the answers under the keys of the questions, the model, and the token usage when known
