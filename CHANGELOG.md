@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.4...2.3.0) (2026-11-18)
+
+
+### Features
+
+* add the decision model resource api ([e6ce391](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/e6ce39114a09cfeaaa2cb4497b72fc60499e5d72))
+
 ## [2.2.4](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.2.3...2.2.4) (2026-11-05)
 
 
