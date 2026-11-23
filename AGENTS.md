@@ -10,7 +10,8 @@ changelog by hand.
 
 `gravitee-resource-ai-model-api` is the contract between the policies that use an AI model and the resource plugins
 that supply one. It holds no model: each resource plugin (`gravitee-resource-ai-model-text-classification`,
-`-token-classification`, `-text-embedding`, `-decision`) implements one of its abstract resources, and each policy
+`-token-classification`, `-token-classification-remote`, `-text-embedding`, `-decision`) implements one of its abstract
+resources, and each policy
 (`gravitee-policy-ai-prompt-guard-rails`, `-pii-filtering`, `-ai-semantic-caching`, the guardrails) calls it. The
 gateway does not supply this API: every plugin bundles its own copy, so a change here only reaches a plugin when it
 upgrades its dependency.
@@ -27,6 +28,18 @@ upgrades its dependency.
   - `DecisionRequest`: the context, made of JSON values and sent to the model as JSON, and the questions under their
     keys, in order
   - `DecisionResult`: the answers under the keys of the questions, the model, and the token usage when known
+- `token_classification`: `AiTokenClassificationModelResource`, a model that finds passages in texts and labels them.
+  Like the decision resource, it has no lifecycle of its own. It names no kind of model: the resource maps the labels
+  of its model to the categories of a catalog and answers the id of that catalog
+  - `TokenClassificationRequest`: the texts, each classified on its own
+  - `TokenClassificationResult`: the spans of each text, in the order of the texts, the model, and the token usage
+    when known. A `Span` carries its category in the catalog, the label of the model, a score and its offsets in the
+    text, as `String.substring` counts them. The spans of a text are entities, in the order of their start, and may
+    overlap. Consumers read them through `spansFor(request)`, which checks that every text has its result
+- `catalog`: the vocabularies a token classification resource maps to, as data only: the contract of the resource does
+  not depend on them. `PiiCatalog` is the only one. A category travels as its name, which configurations hold: only
+  add categories, never rename nor remove one. A consumer on an older copy of the API may meet a category it does not
+  know: it fails closed, treating it as data to protect
 - `ModelInvokeException`: the model gave no usable answer. `ModelLifeCycleException`: it could not be loaded or
   unloaded
 
