@@ -16,18 +16,17 @@
 package io.gravitee.resource.ai_model.api.decision;
 
 import io.gravitee.resource.ai_model.api.ModelInvokeException;
-import io.gravitee.resource.api.AbstractConfigurableResource;
-import io.gravitee.resource.api.ResourceConfiguration;
 import io.reactivex.rxjava3.core.Single;
 
 /**
  * A resource giving access to a decision model: a model that answers questions about a context with a decision and
  * how sure it is of it, rather than with generated text.
- *
- * @param <C> the configuration of the resource.
+ * <p>
+ * It is an interface, which a resource implements alongside the resource class it extends, an
+ * {@link io.gravitee.resource.api.AbstractConfigurableResource} for instance: it has no lifecycle of its own, the
+ * implementation owns the client that reaches the model and releases it on stop.
  */
-public abstract class AiDecisionModelResource<C extends ResourceConfiguration> extends AbstractConfigurableResource<C> {
-
+public interface AiDecisionModelResource {
     /**
      * Asks the model the questions of the request about its context.
      *
@@ -37,5 +36,5 @@ public abstract class AiDecisionModelResource<C extends ResourceConfiguration> e
      *         check the answers of the model (a known key and shape for each question, probabilities and confidences
      *         from 0 to 1, a choice among those of the question, a score within the scale) before returning them.
      */
-    public abstract Single<DecisionResult> decide(DecisionRequest request);
+    Single<DecisionResult> decide(DecisionRequest request);
 }
