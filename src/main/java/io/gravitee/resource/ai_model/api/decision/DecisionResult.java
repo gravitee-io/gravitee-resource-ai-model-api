@@ -15,6 +15,7 @@
  */
 package io.gravitee.resource.ai_model.api.decision;
 
+import io.gravitee.resource.ai_model.api.Usage;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Objects;
@@ -41,10 +42,4 @@ public record DecisionResult(String model, SequencedMap<String, Answer> answers,
         });
         answers = Collections.unmodifiableSequencedMap(new LinkedHashMap<>(answers));
     }
-
-    /**
-     * @param inputTokens the tokens of the request.
-     * @param outputTokens the tokens of the answer.
-     */
-    public record Usage(long inputTokens, long outputTokens) {}
 }
