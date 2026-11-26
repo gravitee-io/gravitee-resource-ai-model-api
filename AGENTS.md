@@ -10,8 +10,8 @@ changelog by hand.
 
 `gravitee-resource-ai-model-api` is the contract between the policies that use an AI model and the resource plugins
 that supply one. It holds no model: each resource plugin (`gravitee-resource-ai-model-text-classification`,
-`-token-classification`, `-token-classification-remote`, `-text-embedding`, `-decision`) implements one of its abstract
-resources, and each policy
+`-token-classification`, `-token-classification-remote`, `-text-embedding`, `-decision`) implements one of its resource
+contracts, and each policy
 (`gravitee-policy-ai-prompt-guard-rails`, `-pii-filtering`, `-ai-semantic-caching`, the guardrails) calls it. The
 gateway does not supply this API: every plugin bundles its own copy, so a change here only reaches a plugin when it
 upgrades its dependency.
@@ -21,8 +21,8 @@ upgrades its dependency.
   `inference.models.loadTimeout` (5 minutes by default), and unloads it on stop. Implementations give the client and
   turn its `MODEL_RESULT` into their `RESOURCE_RESULT` (`result`: `ClassifierResults`, `EmbeddingResult`)
 - `decision`: `AiDecisionModelResource`, a model that answers keyed questions about a context with a decision and a
-  confidence rather than with text. It has no lifecycle of its own: the implementation owns the client that reaches
-  the model and releases it on stop
+  confidence rather than with text. An interface, with no lifecycle of its own: the implementation owns the client
+  that reaches the model and releases it on stop
   - `Question` (sealed): `Noul` (yes or no, a name from the SystemOne specification: keep it), `Choice` or `Score`.
     Each is answered by the `Answer` subtype of the same name
   - `DecisionRequest`: the context, made of JSON values and sent to the model as JSON, and the questions under their
@@ -47,6 +47,9 @@ upgrades its dependency.
 
 - This is a published API used by several plugins: a change to a public type or signature breaks them when they
   upgrade. Mark such a commit as breaking (`feat!:` or a `BREAKING CHANGE:` footer) so semantic-release bumps the major.
+- A resource contract that has no lifecycle of its own is an interface, not an abstract class: a resource plugin
+  already extends a resource class (`AbstractConfigurableResource`, `AiTextModelResource`), and implements the contract
+  alongside it. Consumers look the resource up by name and check the contract with `instanceof`.
 - Value types are records, validated in their compact constructor: throw `IllegalArgumentException` for an invalid
   value (`NullPointerException` from `Objects.requireNonNull` for a missing required one), and copy collections into
   unmodifiable ones. Type a map whose order matters as a `SequencedMap`, so that an unordered one does not compile,
