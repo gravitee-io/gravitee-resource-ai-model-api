@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.3.1...2.4.0) (2026-11-26)
+
+
+### Features
+
+* add the token classification model resource api ([14a38b7](https://github.com/gravitee-io/gravitee-resource-ai-model-api/commit/14a38b7500f1adf05cab5a44af98a9d5c68e6838))
+
 ## [2.3.1](https://github.com/gravitee-io/gravitee-resource-ai-model-api/compare/2.3.0...2.3.1) (2026-11-18)
 
 
