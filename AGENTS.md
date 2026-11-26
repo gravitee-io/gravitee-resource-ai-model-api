@@ -40,6 +40,7 @@ upgrades its dependency.
   not depend on them. `PiiCatalog` is the only one. A category travels as its name, which configurations hold: only
   add categories, never rename nor remove one. A consumer on an older copy of the API may meet a category it does not
   know: it fails closed, treating it as data to protect
+- `Usage`: the tokens a call to a model consumed, shared by the results of every contract
 - `ModelInvokeException`: the model gave no usable answer. `ModelLifeCycleException`: it could not be loaded or
   unloaded
 
